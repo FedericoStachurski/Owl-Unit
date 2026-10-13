@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "owl-unit"
+version = "0.1.0"
+description = "Owl facial landmark annotation and training pipeline"
+requires-python = ">=3.11"
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "pillow",
+    "napari[pyqt6]",
+    "magicgui",
+    "PyYAML"
+]
+
+[project.scripts]
+owl-unit = "cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

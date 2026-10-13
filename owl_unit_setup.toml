@@ -1,0 +1,112 @@
+# ============================================================
+# OWL UNIT - PROJECT CONFIGURATION
+# ============================================================
+#
+# Configuration for manual owl facial landmark annotation.
+#
+# Run using:
+#
+# owl-unit annotate --config owl_unit_setup.toml
+#
+# Or test with 5 images:
+#
+# owl-unit annotate --config owl_unit_setup.toml --limit 5
+#
+# ============================================================
+
+
+# ============================================================
+# 1. PROJECT INFORMATION
+# ============================================================
+
+[project]
+
+name = "Owl Unit"
+version = "0.1.0"
+description = "Owl facial landmark annotation and measurement"
+
+
+# ============================================================
+# 2. DATA DIRECTORIES
+# ============================================================
+
+[paths]
+
+# Original owl photographs
+images_root = "data/raw_images/Siviglia"
+
+# Directory for saving annotations
+output_dir = "data/annotations"
+
+
+# ============================================================
+# 3. IMAGE SETTINGS
+# ============================================================
+
+[images]
+
+# Supported image formats
+extensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".tif",
+    ".tiff",
+    ".webp",
+]
+
+# Search for images in subdirectories
+recursive = true
+
+
+# ============================================================
+# 4. NAPARI ANNOTATION SETTINGS
+# ============================================================
+
+[napari_annotation]
+
+# CSV containing one row per owl photograph
+manifest_csv = "data/annotations/owl_manifest.csv"
+
+# CSV containing individual landmark coordinates
+keypoints_csv = "data/annotations/owl_keypoints.csv"
+
+# Directory for saving manually rotated photographs
+corrected_dir = "data/processed/upright_images"
+
+# Save upright copies of photographs after annotation
+# Original images are never modified
+save_corrected_images = false
+
+
+# ============================================================
+# 5. FACIAL LANDMARKS
+# ============================================================
+
+# Eight points defining the facial boundary
+# Plus one point marking the beak
+
+# IMPORTANT:
+# Keep the landmark names and order consistent once
+# annotation begins.
+
+landmarks = [
+    "lower_left",
+    "middle_left",
+    "upper_left",
+    "top_middle",
+    "upper_right",
+    "middle_right",
+    "lower_right",
+    "bottom_middle",
+    "beak_tip",
+]
+
+# ============================================================
+# 6. PIPELINE STEPS
+# ============================================================
+
+[steps]
+
+# Manual landmark annotation
+napari = "src/annotations/napari_annotate.py"
