@@ -1,0 +1,6 @@
+name: owl-unit
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+prefix: /home/fss6k/miniconda3/envs/owl-unit

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Data
+data/raw_images/
+data/processed_images/
+
+# Models
+*.pt
+*.pth
+*.ckpt
+
+# Outputs
+results/
+outputs/
+
+# System
+.DS_Store
