@@ -1,0 +1,48 @@
+# ============================================================
+# OWL UNIT - DEEPLABCUT TRAINING CONFIGURATION
+# Dataset: Siviglia
+# ============================================================
+
+[project]
+name = "Owl Unit"
+dataset = "Siviglia"
+
+[paths]
+images = "data/raw_images/Siviglia"
+annotations = "data/annotations/Siviglia"
+manifest = "data/annotations/Siviglia/owl_manifest.csv"
+keypoints = "data/annotations/Siviglia/owl_keypoints.csv"
+
+dlc_project = "data/processed/dlc/Siviglia"
+results = "results/training/Siviglia"
+
+[dataset]
+total_images = 669
+annotated_images = 3
+
+[model]
+framework = "deeplabcut"
+engine = "pytorch"
+backbone = "resnet_50"
+
+[training]
+epochs = 200
+batch_size = 8
+train_fraction = 0.80
+validation_fraction = 0.10
+test_fraction = 0.10
+random_seed = 42
+device = "cuda"
+
+[landmarks]
+names = [
+    "lower_left",
+    "middle_left",
+    "upper_left",
+    "top_middle",
+    "upper_right",
+    "middle_right",
+    "lower_right",
+    "bottom_middle",
+    "beak_tip"
+]
