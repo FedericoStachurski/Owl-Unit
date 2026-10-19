@@ -1,0 +1,19 @@
+name: owl-unit-annotations
+
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  # Python environment
+  - python=3.11
+  - pip
+
+  # Annotation dependencies
+  - pip:
+      - "napari[all]"
+      - numpy
+      - pandas
+      - pillow
+      - matplotlib
+      - opencv-python
