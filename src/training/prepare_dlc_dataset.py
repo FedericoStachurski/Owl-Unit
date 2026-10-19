@@ -42,6 +42,89 @@ def make_reference_video(path):
     if not path.exists() or path.stat().st_size == 0:
         raise RuntimeError('Unable to create reference video')
 
+def filter_annotations_by_facing(manifest, config):
+    """
+    Filter annotated photographs using the facing-direction
+    settings specified in the training TOML.
+
+    Parameters
+    ----------
+    manifest : pandas.DataFrame
+        Owl annotation manifest.
+
+    config : dict
+        Loaded training configuration.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Filtered annotation manifest.
+    """
+
+    selection = config.get("selection", {})
+
+    facing = selection.get("facing", "all")
+    exclude_unclear = selection.get("exclude_unclear", True)
+
+    allowed = {
+        "all": {"left", "right", "front", "unclear"},
+        "left": {"left"},
+        "right": {"right"},
+        "front": {"front"},
+        "left_right": {"left", "right"},
+    }
+
+    if facing not in allowed:
+        raise ValueError(f"Unknown facing selection: {facing}")
+
+    selected_directions = allowed[facing].copy()
+
+    if exclude_unclear:
+        selected_directions.discard("unclear")
+
+    manifest = manifest.copy()
+
+    manifest["status"] = (
+        manifest["status"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+        .str.lower()
+    )
+
+    manifest["facing"] = (
+        manifest["facing"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+        .str.lower()
+    )
+
+    filtered = manifest.loc[
+        (manifest["status"] == "annotated")
+        & (manifest["facing"].isin(selected_directions))
+    ].copy()
+
+    print("\n" + "=" * 60)
+    print("OWL UNIT - TRAINING IMAGE SELECTION")
+    print("=" * 60)
+
+    print(f"Facing selection: {facing}")
+    print(f"Exclude unclear:  {exclude_unclear}")
+    print(f"Selected images:  {len(filtered)}")
+
+    print("\nSelected facing distribution:")
+    print(filtered["facing"].value_counts().to_string())
+
+    print("=" * 60)
+
+    if filtered.empty:
+        raise ValueError(
+            f"No annotated photographs match facing='{facing}'."
+        )
+
+    return filtered
+
 
 def prepare(dataset, config_path=None):
     if not dataset or dataset in ('.','..') or '/' in dataset or '\\' in dataset:

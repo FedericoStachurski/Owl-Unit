@@ -1,40 +1,126 @@
 # ============================================================
 # OWL UNIT - DEEPLABCUT TRAINING CONFIGURATION
+# ============================================================
+#
 # Dataset: Siviglia
+#
+# Generated automatically by:
+#
+# owl-unit setup-training Siviglia
+#
+# NOTE:
+# Selection settings must be applied by prepare_dlc_dataset.py.
+#
+# ============================================================
+
+
+# ============================================================
+# PROJECT
 # ============================================================
 
 [project]
+
 name = "Owl Unit"
 dataset = "Siviglia"
 
+
+# ============================================================
+# DATA PATHS
+# ============================================================
+
 [paths]
+
 images = "data/raw_images/Siviglia"
 annotations = "data/annotations/Siviglia"
+
 manifest = "data/annotations/Siviglia/owl_manifest.csv"
 keypoints = "data/annotations/Siviglia/owl_keypoints.csv"
 
 dlc_project = "data/processed/dlc/Siviglia"
 results = "results/training/Siviglia"
 
+
+# ============================================================
+# DATASET STATISTICS
+# ============================================================
+
 [dataset]
+
 total_images = 669
-annotated_images = 3
+annotated_images = 13
+
+selected_images = 4
+
+pending_images = 649
+skipped_images = 7
+
+left_images = 7
+right_images = 4
+front_images = 2
+unclear_images = 0
+
+
+# ============================================================
+# TRAINING IMAGE SELECTION
+# ============================================================
+
+[selection]
+
+# Options:
+#   all
+#   left
+#   right
+#   front
+#   left_right
+
+facing = "right"
+
+# Exclude photographs with unclear direction
+exclude_unclear = true
+
+# Standardise facing direction by horizontally flipping images
+normalize_facing = false
+
+# Direction to standardise towards
+target_facing = "left"
+
+
+# ============================================================
+# DEEPLABCUT MODEL
+# ============================================================
 
 [model]
+
 framework = "deeplabcut"
 engine = "pytorch"
+
 backbone = "resnet_50"
 
+
+# ============================================================
+# TRAINING PARAMETERS
+# ============================================================
+
 [training]
+
 epochs = 200
 batch_size = 8
+
 train_fraction = 0.80
 validation_fraction = 0.10
 test_fraction = 0.10
+
 random_seed = 42
+
 device = "cuda"
 
+
+# ============================================================
+# FACIAL LANDMARKS
+# ============================================================
+
 [landmarks]
+
 names = [
     "lower_left",
     "middle_left",

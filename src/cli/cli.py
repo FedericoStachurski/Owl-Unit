@@ -37,6 +37,12 @@ def main():
     setup_training = sub.add_parser("setup-training", help="Generate dataset-specific training TOML")
     setup_training.add_argument("dataset")
     setup_training.add_argument("--overwrite", action="store_true")
+    setup_training.add_argument("--facing",choices=["all", "left", "right", "front", "left_right"], default="left_right",help="Select facing direction for training")
+    setup_training.add_argument("--normalize-facing",action="store_true",help="Horizontally flip images to standardise facing direction")
+    setup_training.add_argument("--target-facing",choices=["left", "right"],default="left",help="Target facing direction after normalisation")
+    setup_training.add_argument("--include-unclear", action="store_true", help="Include unclear-facing images when using --facing all")
+
+
 
     prepare = sub.add_parser("prepare", help="Convert saved napari points to DeepLabCut format")
     prepare.add_argument("dataset")
@@ -55,7 +61,15 @@ def main():
 
     if args.command == "setup-training":
         from training.create_training_config import generate_config
-        generate_config(dataset=args.dataset, root=root, overwrite=args.overwrite)
+        generate_config(
+        dataset=args.dataset,
+        root=root,
+        overwrite=args.overwrite,
+        facing=args.facing,
+        normalize_facing=args.normalize_facing,
+        target_facing=args.target_facing,
+        exclude_unclear=not args.include_unclear,
+    )
         return
 
     if args.command == "prepare":
